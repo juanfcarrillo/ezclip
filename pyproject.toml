@@ -1,0 +1,33 @@
+[project]
+name = "ezclip"
+version = "0.1.0"
+description = "AI-powered video highlights extraction API using FastAPI, Firebase, R2, and Gemini"
+authors = [
+    {name = "juanfcarrillo",email = "juanfi444@outlook.com"}
+]
+readme = "README.md"
+requires-python = "^3.11"
+dependencies = [
+    "fastapi (>=0.116.1,<0.117.0)",
+    "firebase-admin (>=7.0.0,<8.0.0)",
+    "uvicorn (>=0.35.0,<0.36.0)",
+    "python-dotenv (>=1.1.1,<2.0.0)",
+    "requests (>=2.32.4,<3.0.0)",
+    "google-genai (>=1.27.0,<2.0.0)",
+    "types-firebase-admin (>=0.1.1,<0.2.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.poetry]
+package-mode = false
+
+[[tool.poetry.packages]]
+include = "app/main"
+
+[[tool.poetry.packages]]
+include = "app/clipping"
