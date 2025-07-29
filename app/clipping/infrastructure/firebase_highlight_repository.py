@@ -4,6 +4,7 @@ from app.clipping.domain.video_understanding import (
     HighlightRepository,
     HighlightsResponse,
 )
+from firebase_init import firebase_app
 
 
 class FirebaseHighlightRepository(HighlightRepository):
@@ -13,7 +14,7 @@ class FirebaseHighlightRepository(HighlightRepository):
     """
 
     def __init__(self):
-        self.db = client()
+        self.db = client(firebase_app)
 
     def save_highlights(self, video_id: str, highlights: HighlightsResponse) -> None:
         # Encode video_id to ensure it's a valid Firestore document ID

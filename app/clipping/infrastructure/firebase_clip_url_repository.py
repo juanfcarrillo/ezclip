@@ -1,6 +1,7 @@
 import base64
 from firebase_admin.firestore import client
 from app.clipping.domain.video_understanding import ClipUrlRepository
+from firebase_init import firebase_app
 
 
 class FirebaseClipUrlRepository(ClipUrlRepository):
@@ -10,7 +11,7 @@ class FirebaseClipUrlRepository(ClipUrlRepository):
     """
 
     def __init__(self):
-        self.db = client()
+        self.db = client(firebase_app)
 
     def save_clip_urls(self, video_id: str, highlight_to_url: dict[str, str]) -> None:
         safe_id = base64.urlsafe_b64encode(video_id.encode()).decode()
