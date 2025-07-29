@@ -17,7 +17,9 @@ dependencies = [
     "types-firebase-admin (>=0.1.1,<0.2.0)",
     "boto3 (>=1.39.15,<2.0.0)",
     "moviepy (>=2.2.1,<3.0.0)",
-    "yt-dlp (>=2025.7.21,<2026.0.0)"
+    "yt-dlp (>=2025.7.21,<2026.0.0)",
+    "celery (>=5.5.3,<6.0.0)",
+    "redis (>=6.2.0,<7.0.0)"
 ]
 
 
@@ -35,3 +37,4 @@ include = "app"
 [tool.poetry.group.dev.dependencies]
 boto3-stubs = "^1.39.15"
 pytest = "^8.4.1"
+celery-types = "^0.23.0"
