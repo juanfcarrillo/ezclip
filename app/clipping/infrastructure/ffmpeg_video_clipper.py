@@ -1,11 +1,11 @@
 import os
 from typing import List
+import concurrent.futures
 import ffmpeg  # type: ignore
 from app.clipping.domain.video_understanding import (
     VideoClipperService,
     HighlightsResponse,
 )
-import concurrent.futures
 
 
 class FFmpegVideoClipper(VideoClipperService):
@@ -19,12 +19,9 @@ class FFmpegVideoClipper(VideoClipperService):
 
         def to_seconds(ts: str) -> float:
             parts = ts.split(":")
-            if len(parts) == 3:
-                return int(parts[0]) * 3600 + int(parts[1]) * 60 + float(parts[2])
-            elif len(parts) == 2:
-                return int(parts[0]) * 60 + float(parts[1])
-            else:
-                return float(parts[0])
+            if len(parts) != 3:
+                raise ValueError(f"Timestamp '{ts}' is not in HH:MM:SS format.")
+            return int(parts[0]) * 3600 + int(parts[1]) * 60 + float(parts[2])
 
         def process_clip(idx, h):
             if h.start_time is None or h.end_time is None:
