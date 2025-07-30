@@ -18,6 +18,7 @@ class ClipUrlRepository(ABC):
 class ClipResult(BaseModel):
     clips: List[str]
     highlights: Any  # Can be HighlightsResponse or dict, depending on serialization
+    video_id: str
 
 
 class Highlight(BaseModel):

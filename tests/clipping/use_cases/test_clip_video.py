@@ -37,7 +37,7 @@ def test_clip_video_from_highlights_use_case(
     highlights = HighlightsResponse(
         highlights=[
             Highlight(
-                start_time="00:00", end_time="00:10", description="Test highlight"
+                id="asda", start_time="00:00", end_time="00:10", description="Test highlight"
             )
         ]
     )

@@ -1,3 +1,4 @@
+import re
 from typing import Optional
 import logging
 from app.clipping.infrastructure.youtube_downloader import download_youtube_video
@@ -9,6 +10,24 @@ from app.clipping.domain.video_understanding import (
     ClipResult,
     ClipUrlRepository,
 )
+
+
+def get_youtube_video_id(url: str) -> str:
+    """
+    Extracts the YouTube video ID from a given URL.
+    Supports both youtube.com and youtu.be formats.
+    """
+
+    # Patterns for youtube.com and youtu.be
+    patterns = [
+        r"(?:v=|\/embed\/|\/v\/|\/shorts\/|youtu\.be\/)([\w-]{11})",
+        r"youtube\.com\/watch\?.*v=([\w-]{11})",
+    ]
+    for pattern in patterns:
+        match = re.search(pattern, url)
+        if match:
+            return match.group(1)
+    raise ValueError(f"Could not extract YouTube video ID from URL: {url}")
 
 
 class ClipVideoFromHighlightsUseCase:
@@ -64,9 +83,11 @@ class ClipVideoFromHighlightsUseCase:
         clip_urls = [self.storage_service.save_video(path) for path in clip_paths]
         logger.info("Clip URLs: %s", clip_urls)
 
+        video_id = get_youtube_video_id(video_url)
+
         # 5. Save highlights info (metadata)
         logger.info("Saving highlights metadata...")
-        self.highlight_repository.save_highlights(video_url, highlights)
+        self.highlight_repository.save_highlights(video_id, highlights)
 
         # 6. Associate highlight ids with clip urls and save
         highlight_to_url: dict[str, str] = {}
@@ -76,7 +97,7 @@ class ClipVideoFromHighlightsUseCase:
             for highlight, url in zip(highlights.highlights, clip_urls):
                 highlight_to_url[highlight.id] = url
         logger.info("Saving highlight-to-URL mapping: %s", highlight_to_url)
-        self.clip_url_repository.save_clip_urls(video_url, highlight_to_url)
+        self.clip_url_repository.save_clip_urls(video_id, highlight_to_url)
 
         logger.info("Video clipping process completed.")
-        return ClipResult(clips=clip_urls, highlights=highlights.model_dump())
+        return ClipResult(clips=clip_urls, highlights=highlights.model_dump(), video_id=video_id)
