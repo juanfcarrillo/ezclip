@@ -38,10 +38,31 @@ class GeminiVideoUnderstandingService(VideoUnderstandingService):
 
         client = genai.Client(api_key=GOOGLE_GENAI_API_KEY)
 
-        system_prompt = prompt or (
-            "Find and summarize the highlights (best moments) of this video. "
-            "Return a list of highlights with start_time, end_time, and a short description for each."
-        )
+        system_prompt = """
+You are a video editor for a YouTube channel who wants to make their content very engaging and interesting, he wants to make short content from his large video.
+Please meet the following constraints:
+
+Please meet the following constraints:
+- The highlights should be a direct part of the video and should not be out of context
+- The highlights should be interesting and clippable, providing value to the viewer
+- The highlights should not be too short or too long, but should be just the right length to convey the information
+- The highlights should include more than one segment to provide context and continuity
+- The highlights should not cut off in the middle of a sentence or idea
+- The user provided highlight phrases should be used to generate the highlights
+- The highlights should be based on the relevance of the segments to the highlight phrases
+- The highlights should be scored out of 100 based on the relevance of the segments to the highlight phrases
+- The highlights should start with a catch up phrase and end with a conclusion phrase or with a cliffhanger
+
+Definition of terms:
+- Too short highlights: A highlight is considered too short if its duration is less than 15 seconds.
+- Too large highlights: A highlight is considered too short if its duration is more than 180 seconds.
+
+Considerations:
+- The highlights should be a direct part of the video and should not be out of context
+- The response has to be in JSON format, omit other information like code, comments, ``` or ```json.
+- The idea has to be complete, no partial ideas allowed.
+- All the outcome should be in the same language as the video trasncript.
+"""
 
         contents = types.Content(
             parts=[
@@ -55,7 +76,7 @@ class GeminiVideoUnderstandingService(VideoUnderstandingService):
             "response_schema": VideoUnderstandingHighlightsResponse,
         }
 
-        response: GenerateContentResponse = client.models.generate_content(  # type: ignore
+        response: GenerateContentResponse = client.models.generate_content(
             model=MODEL_NAME, contents=contents, config=config
         )
 

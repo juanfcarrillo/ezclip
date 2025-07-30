@@ -17,7 +17,7 @@ def download_youtube_video(url: str) -> str:
         "geo_bypass": True,
         "verbose": True,
         "outtmpl": outtmpl,
-        "format": "bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]/best[height<=1080][ext=mp4]/best[height<=1080]",
+        "format": "bestvideo[ext=mp4][height<=1080]+bestaudio[ext=mp4]/best[ext=mp4][height<=1080]",
         "merge_output_format": "mp4",
     }
     with YoutubeDL(ydl_opts) as ydl:

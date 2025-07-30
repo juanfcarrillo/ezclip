@@ -11,11 +11,11 @@ from app.clipping.infrastructure.gemini_video_understanding import (
 from app.clipping.infrastructure.firebase_clip_url_repository import (
     FirebaseClipUrlRepository,
 )
-from app.clipping.infrastructure.moviepy_video_clipper import MoviePyVideoClipper
+from app.clipping.infrastructure.ffmpeg_video_clipper import FFmpegVideoClipper
 
 use_case = ClipVideoFromHighlightsUseCase(
     video_understanding_service=GeminiVideoUnderstandingService(),
-    video_clipper_service=MoviePyVideoClipper(),
+    video_clipper_service=FFmpegVideoClipper(),
     storage_service=R2StorageService(),
     highlight_repository=FirebaseHighlightRepository(),
     clip_url_repository=FirebaseClipUrlRepository(),
