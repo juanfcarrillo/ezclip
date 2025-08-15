@@ -30,6 +30,7 @@ def download_youtube_video(url: str) -> str:
         "merge_output_format": "mp4",
         "ignoreerrors": False,
         "no_warnings": True,  # Suppress format selection warnings
+        "cookiefile": "cookies.txt",
     }
     with YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(url, download=True)  # type: ignore
