@@ -29,18 +29,33 @@ class FFmpegVideoClipper(VideoClipperService):
             start = to_seconds(h.start_time)
             end = to_seconds(h.end_time)
             out_path = f"/tmp/{base}_clip{idx}{ext}"
-            (
-                ffmpeg.input(video_url, ss=start, to=end)
-                .output(
-                    out_path,
-                    c="copy",
-                    # vcodec="libx264",
-                    # acodec="aac",
-                    # movflags="faststart",
-                    preset="ultrafast",
+            try:
+                (
+                    ffmpeg.input(video_url, ss=start, to=end + 10)
+                    .output(
+                        out_path,
+                        c="copy",
+                        # vcodec="libx264",
+                        # acodec="aac",
+                        # movflags="faststart",
+                        preset="ultrafast",
+                    )
+                    .run(overwrite_output=True)
                 )
-                .run(overwrite_output=True)
-            )
+            except ffmpeg.Error as e:
+                print(f"Error processing clip {idx}: {e}")
+                (
+                    ffmpeg.input(video_url, ss=start, to=end)
+                    .output(
+                        out_path,
+                        c="copy",
+                        # vcodec="libx264",
+                        # acodec="aac",
+                        # movflags="faststart",
+                        preset="ultrafast",
+                    )
+                    .run(overwrite_output=True)
+                )
             return out_path
 
         with concurrent.futures.ThreadPoolExecutor() as executor:
