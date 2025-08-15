@@ -15,10 +15,21 @@ def download_youtube_video(url: str) -> str:
             "Sec-Fetch-Mode": "navigate",
         },
         "geo_bypass": True,
-        "verbose": True,
+        "verbose": False,  # Reduce verbosity to avoid format warnings
         "outtmpl": outtmpl,
-        "format": "bestvideo[ext=mp4][height<=1080]+bestaudio[ext=mp4]/best[ext=mp4][height<=1080]",
+        "format": (
+            # Try best quality MP4 with height limit first
+            "bestvideo[ext=mp4][height<=1080]+bestaudio[ext=m4a]/bestaudio[ext=mp4]/"
+            # Fallback to any best video+audio combo with height limit
+            "bestvideo[height<=1080]+bestaudio[ext=m4a]/bestaudio/"
+            # Final fallback to any best single file
+            "best[ext=mp4][height<=1080]/"
+            "best[height<=1080]/"
+            "best"
+        ),
         "merge_output_format": "mp4",
+        "ignoreerrors": False,
+        "no_warnings": True,  # Suppress format selection warnings
     }
     with YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(url, download=True)  # type: ignore
