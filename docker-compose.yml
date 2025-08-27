@@ -9,6 +9,8 @@ services:
       - redis
     environment:
       - PYTHONUNBUFFERED=1
+      - CREDENTIALS=${CREDENTIALS}
+      - COOKIES=${COOKIES}
     restart: unless-stopped
 
   worker:
@@ -18,6 +20,8 @@ services:
       - redis
     environment:
       - PYTHONUNBUFFERED=1
+      - CREDENTIALS=${CREDENTIALS}
+      - COOKIES=${COOKIES}
     restart: unless-stopped
 
   redis:

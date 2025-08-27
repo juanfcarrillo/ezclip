@@ -20,7 +20,11 @@ RUN poetry config virtualenvs.create false \
 # Copy the rest of the code
 COPY . .
 
+# Make init scripts executable
+RUN chmod +x init_env_files.sh entrypoint.sh
+
 # Expose FastAPI port
 EXPOSE 8081
 
-# Entrypoint will be set by docker-compose
+# Set entrypoint
+ENTRYPOINT ["./entrypoint.sh"]
