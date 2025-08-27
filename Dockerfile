@@ -27,4 +27,4 @@ RUN chmod +x init_env_files.sh entrypoint.sh
 EXPOSE 8081
 
 # Set entrypoint
-ENTRYPOINT ["./entrypoint.sh"]
+CMD ["./entrypoint.sh"]
