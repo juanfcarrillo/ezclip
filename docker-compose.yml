@@ -10,7 +10,7 @@ services:
     ports:
       - "8081:8081"
     depends_on:
-      - redis
+      - redis-cont
     environment:
       - PYTHONUNBUFFERED=1
     restart: unless-stopped
