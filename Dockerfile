@@ -21,6 +21,6 @@ RUN poetry config virtualenvs.create false \
 COPY . .
 
 # Expose FastAPI port
-EXPOSE 8000
+EXPOSE 8081
 
 # Entrypoint will be set by docker-compose
