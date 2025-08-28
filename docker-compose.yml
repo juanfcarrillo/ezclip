@@ -37,6 +37,11 @@ services:
     #   - "6379:6379"  # Only expose internally to other containers
     restart: unless-stopped
     container_name: redis-cont
-    command: redis-server --protected-mode yes --bind 0.0.0.0 --requirepass ${REDIS_PASSWORD:-defaultpass} --save ""
+    command: redis-server --protected-mode yes --bind 0.0.0.0 --requirepass ${REDIS_PASSWORD:-defaultpass} --dir /data --dbfilename dump.rdb
     environment:
       - REDIS_PASSWORD=${REDIS_PASSWORD:-defaultpass}
+    volumes:
+      - redis_data:/data
+
+volumes:
+  redis_data:
