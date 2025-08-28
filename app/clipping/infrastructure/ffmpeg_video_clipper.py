@@ -39,6 +39,7 @@ class FFmpegVideoClipper(VideoClipperService):
                         # acodec="aac",
                         # movflags="faststart",
                         preset="ultrafast",
+                        threads=2,
                     )
                     .run(overwrite_output=True)
                 )
