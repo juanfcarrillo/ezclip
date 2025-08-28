@@ -1,9 +1,13 @@
+import os
 from celery import Celery
+
+# Use different Redis URLs for local vs Docker environments
+redis_url = os.getenv("REDIS_URL", "redis://localhost:6379/0")
 
 celery_app: Celery = Celery(
     "ezclip",
-    broker="redis://redis-cont:6379/0",
-    backend="redis://redis-cont:6379/0",
+    broker=redis_url,
+    backend=redis_url,
     include=["app.clipping.tasks"],
 )
 

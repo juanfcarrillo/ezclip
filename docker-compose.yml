@@ -13,6 +13,7 @@ services:
       - redis-cont
     environment:
       - PYTHONUNBUFFERED=1
+      - REDIS_URL=redis://:${REDIS_PASSWORD:-defaultpass}@redis-cont:6379/0
     restart: unless-stopped
 
   worker:
@@ -26,11 +27,16 @@ services:
       - redis-cont
     environment:
       - PYTHONUNBUFFERED=1
+      - REDIS_URL=redis://:${REDIS_PASSWORD:-defaultpass}@redis-cont:6379/0
     restart: unless-stopped
 
   redis-cont:
     image: redis:7
-    ports:
-      - "6379:6379"
+    # Remove external port exposure for security
+    # ports:
+    #   - "6379:6379"  # Only expose internally to other containers
     restart: unless-stopped
     container_name: redis-cont
+    command: redis-server --protected-mode yes --bind 0.0.0.0 --requirepass ${REDIS_PASSWORD:-defaultpass}
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-defaultpass}
