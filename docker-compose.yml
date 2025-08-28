@@ -10,7 +10,7 @@ services:
     ports:
       - "8081:8081"
     depends_on:
-      - redis
+      - redis-cont
     environment:
       - PYTHONUNBUFFERED=1
     restart: unless-stopped
@@ -23,12 +23,12 @@ services:
         - COOKIES=${COOKIES}
     command: poetry run celery -A celery_worker.celery_app worker --loglevel=info -Q clipping
     depends_on:
-      - redis
+      - redis-cont
     environment:
       - PYTHONUNBUFFERED=1
     restart: unless-stopped
 
-  redis:
+  redis-cont:
     image: redis:7
     ports:
       - "6379:6379"
