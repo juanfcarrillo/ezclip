@@ -125,9 +125,9 @@ Considerations:
                     return self.transform_to_response_highlights(
                         VideoUnderstandingHighlightsResponse(**parsed).highlights
                     )
-            except Exception:
-                raise RuntimeError("Error parsing response from Google GenAI.")
-        return HighlightsResponse(highlights=[])
+            except Exception as e:
+                raise RuntimeError("Error parsing response from Google GenAI.") from e
+        raise RuntimeError("Error generating highlights from video. (No parsed response)")
 
     def transform_to_response_highlights(
         self, highlights: list[VideoUnderstandingHighlight]
