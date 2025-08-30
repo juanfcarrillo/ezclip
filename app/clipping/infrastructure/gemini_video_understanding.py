@@ -124,7 +124,7 @@ Response format requirements:
             "temperature": 0.5,
         }
 
-        max_retries = 3
+        max_retries = 2
         for attempt in range(max_retries):
             try:
                 response: GenerateContentResponse = client.models.generate_content(
